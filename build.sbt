@@ -43,5 +43,6 @@ lazy val macrosModuleTesting = (project in file("testing"))
   .dependsOn(macrosModule)
   .settings(
     name := "testing",
-    libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % Test
+    libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % Test,
+    paradiseCompilePlugin
   )

@@ -6,6 +6,7 @@ import scala.reflect.macros.blackbox
 object DefMacro {
 
   def stringChecker(s: String): String = macro stringCheckerImpl
+
   def stringCheckerImpl(c: blackbox.Context)(s: c.Expr[String]): c.Expr[String] = {
     import c.universe._
     s match {
