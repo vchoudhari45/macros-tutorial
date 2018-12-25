@@ -21,7 +21,7 @@ val paradiseVersion = "2.1.0"
 //val paradiseCompilePlugin = addCompilerPlugin("org.scalamacros" % "paradise" % paradiseVersion cross CrossVersion.full)
 val paradiseCompilePlugin = addCompilerPlugin("org.scalamacros" %% "paradise" % paradiseVersion cross CrossVersion.full)
 lazy val root = (project in file("."))
-  .aggregate(macrosModule)  //broadcasts commands to submodule
+  .aggregate(macrosModule, macrosModuleTesting)  //broadcasts commands to submodule
   .settings(
   name := "root",
   paradiseCompilePlugin
@@ -31,14 +31,17 @@ lazy val root = (project in file("."))
 lazy val macrosModule = (project in file("macros"))
   .settings(
     name := "macros",
-    libraryDependencies ++= Seq(
-      scalaVersion("org.scala-lang" % "scala-reflect" % _).value,
-      "org.scalatest" %% "scalatest" % "3.0.5" % Test
-    ),
+    libraryDependencies += scalaVersion("org.scala-lang" % "scala-reflect" % _).value,
     libraryDependencies ++= (
       if (scalaVersion.value.startsWith("2.10")) List("org.scalamacros" %% "quasiquotes" % paradiseVersion)
       else Nil
-      ),
+    ),
     paradiseCompilePlugin
   )
 
+lazy val macrosModuleTesting = (project in file("testing"))
+  .dependsOn(macrosModule)
+  .settings(
+    name := "testing",
+    libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % Test
+  )
